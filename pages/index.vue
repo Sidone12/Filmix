@@ -1,0 +1,54 @@
+<template>
+<div class="px-5">
+    <section>
+        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            Featured Movies
+        </h1>
+        <ul class="grid grid-cols-5">
+            <li v-for="movie in movies">
+                <MovieCard 
+                :poster_path="movie.poster_path" 
+                :title="movie.title" :id="movie.id" 
+                :overview="movie.overview" 
+                :release_date="movie.release_date" 
+                :popularity="movie.popularity" 
+                :item="movie" />
+            </li>
+        </ul>
+    </section>
+    <br /><br />
+    <section>
+        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            Featured TV Series
+        </h1>
+        <ul class="grid grid-cols-5">
+            <li v-for="tvseries in series">
+                <SeriesCard 
+                :poster_path="tvseries.poster_path" 
+                :name="tvseries.name" 
+                :first_air_date="tvseries.first_air_date" 
+                :overview="tvseries.overview" 
+                :popularity="tvseries.popularity" 
+                :item="tvseries" />
+            </li>
+        </ul>
+    </section>
+</div>
+</template>
+
+<script setup>
+const movies = useState(() => [])
+const series = useState(() => [])
+
+const { data } = await useFetch('/api/movies/discover', {
+    default: () => ({ movies: { results: [] }, series: { results: [] } })
+});
+
+watchEffect(() => {
+    if (data.value) {
+        movies.value = data.value.movies.results;
+        series.value = data.value.series.results;
+        console.log(data.value);
+    }
+});
+</script>
