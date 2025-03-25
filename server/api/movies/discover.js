@@ -35,6 +35,6 @@ export default defineEventHandler(async event => {
       sort_by: 'popularity.desc',
     },
   });
-    
-    return { movies , series}
+
+  return {movies, series};
 });
