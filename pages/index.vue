@@ -1,10 +1,10 @@
 <template>
 <div class="px-5">
-    <section>
+    <section v-if="movies.length">
         <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Featured Movies
         </h1>
-        <ul class="grid grid-cols-5">
+        <ul class="grid grid-cols-5 gap-1">
             <li v-for="movie in movies">
                 <MovieCard 
                 :poster_path="movie.poster_path" 
@@ -17,7 +17,7 @@
         </ul>
     </section>
     <br /><br />
-    <section>
+    <section v-if="series.length">
         <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Featured TV Series
         </h1>
@@ -48,7 +48,6 @@ watchEffect(() => {
     if (data.value) {
         movies.value = data.value.movies.results;
         series.value = data.value.series.results;
-        console.log(data.value);
     }
 });
 </script>
