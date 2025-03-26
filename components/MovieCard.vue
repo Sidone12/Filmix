@@ -1,7 +1,7 @@
 <template>
 <div class="max-w-sm bg-slate-300 border border-gray-200  rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center p-2 max-h-[600px] overflow-hidden">
     <NuxtLink @click="changeItemState(item)" :to="`/item/${title}`">
-        <img v-if="poster_path" class="rounded-t-lg" :src="`${imageSiteUrl}${poster_path}`" :alt="`${title}`" />
+        <img v-if="poster_path" class="rounded-t-lg" :src="`${imageSiteUrl}${poster_path}`" :alt="title" />
     </NuxtLink>
     <div class="p-5">
         <a href="#">
