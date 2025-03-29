@@ -24,12 +24,9 @@
 
 <script setup>
 const movies = useState(() => [])
-
-// альтернатива для отримання даних
 const { data } = await useFetch('/api/movies/nowplaying', {
-  transform: (rawData) => {
-    return rawData.results || []
-  }
+    default: () => [],
+    transform: (rawData) => rawData?.results || []
 })
 
 watchEffect(() => {
@@ -37,29 +34,4 @@ watchEffect(() => {
     movies.value = data.value
   }
 })
-// const { data } = await useFetch('/api/movies/nowplaying', {
-//       default: () => ({ movies: { results: []} })
-// })
-
-//   watchEffect(() => {
-//     if (data.value) {
-//       movies.value = data.value.results;
-//     }
-// });
-
-// гарантований мікс який поверне і масив і без зайвої вкладеності
-// const { data } = await useFetch('/api/movies/nowplaying', {
-//   default: () => ({ results: [] }),
-//   transform: (rawData) => {
-//     console.log("Fetched data:", rawData)
-//     return rawData?.results || []
-//   }
-// })
-
-// watchEffect(() => {
-//   if (data.value.length) {
-//     movies.value = data.value
-//     console.log("Movies updated:", movies.value)
-//   }
-// })
 </script>

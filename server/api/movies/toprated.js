@@ -1,24 +1,23 @@
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event);
   const {AccessToken} = config;
-
-    const topRatedMoviesUrl = 'https://api.themoviedb.org/3/movie/top_rated';
-    const topRatedSeriesUrl = 'https://api.themoviedb.org/3/tv/top_rated';
-
-
-  const topRatedMovies = await $fetch(topRatedMoviesUrl, {
-    method: 'get',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${AccessToken}`,
-    },
-  });
-    const topRatedSeries = await $fetch(topRatedSeriesUrl, {
-      method: 'get',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${AccessToken}`,
-      },
-    });
-  return {topRatedMovies, topRatedSeries};
+  
+  const API_BASE_URL = 'https://api.themoviedb.org/3';
+  const commonHeaders = {
+    accept: 'application/json',
+    Authorization: `Bearer ${AccessToken}`,
+  };
+  try {
+    const [topRatedMovies, topRatedSeries] = await Promise.all([
+      $fetch(`${API_BASE_URL}/movie/top_rated`, {method: 'GET', headers: commonHeaders}),
+      $fetch(`${API_BASE_URL}/tv/top_rated`, {method: 'GET', headers: commonHeaders}),
+    ]);
+    return {
+      topRatedMovies: topRatedMovies.results || [],
+      topRatedSeries: topRatedSeries.results || [],
+    };
+  } catch (error) {
+    console.error('Error fetching movies and series:', error);
+    throw createError({statusCode: 500, statusMessage: 'Failed to fetch movies and series'});
+  }
 });

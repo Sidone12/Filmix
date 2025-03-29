@@ -41,13 +41,14 @@ const movies = useState(() => [])
 const series = useState(() => [])
 
 const { data } = await useFetch('/api/movies/discover', {
-    default: () => ({ movies: { results: [] }, series: { results: [] } })
+    default: () => ({ movies: [], series: [] })
 });
 
 watchEffect(() => {
     if (data.value) {
-        movies.value = data.value.movies.results;
-        series.value = data.value.series.results;
+        console.log(data)
+        movies.value = data.value.movies;
+        series.value = data.value.series;
     }
 });
 </script>

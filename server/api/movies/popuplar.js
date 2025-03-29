@@ -2,22 +2,23 @@ export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event);
   const {AccessToken} = config;
 
-  const popularMoviesUrl = 'https://api.themoviedb.org/3/movie/popular';
-  const popularSeriesUrl = 'https://api.themoviedb.org/3/tv/popular';
+  const API_BASE_URL = 'https://api.themoviedb.org/3';
+  const commonHeaders = {
+    accept: 'application/json',
+    Authorization: `Bearer ${AccessToken}`,
+  };
+  try {
+    const [popularMovies, popularSeries] = await Promise.all([
+      $fetch(`${API_BASE_URL}/movie/popular`, {method: 'GET', headers: commonHeaders}),
+      $fetch(`${API_BASE_URL}/tv/popular`, {method: 'GET', headers: commonHeaders}),
+    ]);
 
-  const popularMovies = await $fetch(popularMoviesUrl, {
-    method: 'get',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${AccessToken}`,
-    },
-  });
-  const popularSeries = await $fetch(popularSeriesUrl, {
-    method: 'get',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${AccessToken}`,
-    },
-  });
-  return {popularMovies, popularSeries};
+    return {
+      popularMovies: popularMovies.results || [],
+      popularSeries: popularMovies.results || []
+    };
+  } catch (error) {
+    console.error('Error fetching popular movies and series:', error);
+    throw createError({statusCode: 500, statusMessage: 'Failed to fetch popular movies and series'});
+  }
 });

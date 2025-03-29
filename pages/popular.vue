@@ -53,8 +53,8 @@ const { data } = await useFetch('/api/movies/popuplar', {
 
 watchEffect(() => {
   if (data.value) {
-    movies.value = data.value.popularMovies.results;
-    series.value = data.value.popularSeries.results;
+    movies.value = data.value.popularMovies;
+    series.value = data.value.popularSeries;
   }
 });
 </script>

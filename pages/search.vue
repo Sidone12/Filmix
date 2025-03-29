@@ -62,9 +62,8 @@ const { data } = await useFetch('/api/movies/search', {
 
 watchEffect(() => {
   if (data.value) {
-    // console.log(data.value)
-    movies.value = data.value.movies.results;
-    series.value = data.value.series.results;
+    movies.value = data.value.movies;
+    series.value = data.value.series;
   }
 });
 </script>

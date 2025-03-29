@@ -39,9 +39,8 @@ const { data } = await useFetch('/api/movies/toprated', {
 
 watchEffect(() => {
   if (data.value) {
-    // console.log(data.value)
-    movies.value = data.value.topRatedMovies.results;
-    series.value = data.value.topRatedSeries.results;
+    movies.value = data.value.topRatedMovies;
+    series.value = data.value.topRatedSeries;
   }
 });
 </script>
